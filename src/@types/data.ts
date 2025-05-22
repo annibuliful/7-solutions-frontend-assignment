@@ -3,4 +3,4 @@ export type Item = {
   type: 'Fruit' | 'Vegetable' | 'Any';
 };
 
-export type ColumnType = 'main' | 'Fruit' | 'Vegetable';
+export type ColumnType = 'Main' | 'Fruit' | 'Vegetable';

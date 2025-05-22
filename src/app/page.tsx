@@ -14,7 +14,7 @@ export default function Page() {
     ColumnType,
     React.Dispatch<React.SetStateAction<Item[]>>
   > = {
-    main: setMainList,
+    Main: setMainList,
     Fruit: setFruitList,
     Vegetable: setVegetableList,
   };
@@ -31,11 +31,11 @@ export default function Page() {
   };
 
   const moveToMainList = (item: Item) => {
-    moveItemBetweenLists(item, item.type as ColumnType, 'main');
+    moveItemBetweenLists(item, item.type as ColumnType, 'Main');
   };
 
   const handleMainItemClick = (item: Item) => {
-    moveItemBetweenLists(item, 'main', item.type as ColumnType);
+    moveItemBetweenLists(item, 'Main', item.type as ColumnType);
 
     setTimeout(() => {
       moveToMainList(item);
@@ -43,24 +43,24 @@ export default function Page() {
   };
 
   const handleFruitItemClick = (item: Item) => {
-    moveItemBetweenLists(item, 'Fruit', 'main');
+    moveItemBetweenLists(item, 'Fruit', 'Main');
   };
 
   const handleVegetableItemClick = (item: Item) => {
-    moveItemBetweenLists(item, 'Vegetable', 'main');
+    moveItemBetweenLists(item, 'Vegetable', 'Main');
   };
 
   const handleOnDropItemToMainList = (item: Item) => {
-    moveItemBetweenLists(item, item.type as ColumnType, 'main');
+    moveItemBetweenLists(item, item.type as ColumnType, 'Main');
   };
 
   const handleOnDropItemToFruitList = (item: Item) => {
-    moveItemBetweenLists(item, 'main', 'Fruit');
+    moveItemBetweenLists(item, 'Main', 'Fruit');
     setTimeout(() => moveToMainList(item), 5000);
   };
 
   const handleOnDropItemToVegetableList = (item: Item) => {
-    moveItemBetweenLists(item, 'main', 'Vegetable');
+    moveItemBetweenLists(item, 'Main', 'Vegetable');
     setTimeout(() => moveToMainList(item), 5000);
   };
 

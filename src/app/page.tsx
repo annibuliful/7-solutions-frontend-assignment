@@ -10,7 +10,7 @@ export default function Page() {
   const [fruitList, setFruitList] = useState<Item[]>([]);
   const [vegetableList, setVegetableList] = useState<Item[]>([]);
 
-  function moveToMainList(item: Item) {
+  const moveToMainList = (item: Item) => {
     setMainList((prev) => [...prev, item]);
     if (item.type === 'Fruit') {
       setFruitList((prev) =>
@@ -21,9 +21,9 @@ export default function Page() {
         prev.filter((i) => i.name !== item.name)
       );
     }
-  }
+  };
 
-  function handleMainItemClick(item: Item) {
+  const handleMainItemClick = (item: Item) => {
     setMainList((prev) => prev.filter((i) => i.name !== item.name));
     if (item.type === 'Fruit') {
       setFruitList((prev) => [...prev, item]);
@@ -34,19 +34,44 @@ export default function Page() {
     setTimeout(() => {
       moveToMainList(item);
     }, 5000);
-  }
+  };
 
-  function handleFruitItemClick(item: Item) {
+  const handleFruitItemClick = (item: Item) => {
     setFruitList((prev) => prev.filter((i) => i.name !== item.name));
     setMainList((prev) => [...prev, item]);
-  }
+  };
 
-  function handleVegetableItemClick(item: Item) {
+  const handleVegetableItemClick = (item: Item) => {
     setVegetableList((prev) =>
       prev.filter((i) => i.name !== item.name)
     );
     setMainList((prev) => [...prev, item]);
-  }
+  };
+
+  const handleOnDropItemToMainList = (item: Item) => {
+    if (item.type === 'Fruit') {
+      setFruitList((prev) =>
+        prev.filter((i) => i.name !== item.name)
+      );
+    } else {
+      setVegetableList((prev) =>
+        prev.filter((i) => i.name !== item.name)
+      );
+    }
+    setMainList((prev) => [...prev, item]);
+  };
+
+  const handleOnDropItemToFruitList = (item: Item) => {
+    setMainList((prev) => prev.filter((i) => i.name !== item.name));
+    setFruitList((prev) => [...prev, item]);
+    setTimeout(() => moveToMainList(item), 5000);
+  };
+
+  const handleOnDropItemToVegetableList = (item: Item) => {
+    setMainList((prev) => prev.filter((i) => i.name !== item.name));
+    setVegetableList((prev) => [...prev, item]);
+    setTimeout(() => moveToMainList(item), 5000);
+  };
 
   return (
     <main className="min-h-screen bg-gray-50 text-gray-900 font-sans px-4 py-8">
@@ -58,18 +83,7 @@ export default function Page() {
           borderColor="text-gray-700"
           acceptType="Any"
           onClick={handleMainItemClick}
-          onDropItem={(item) => {
-            if (item.type === 'Fruit') {
-              setFruitList((prev) =>
-                prev.filter((i) => i.name !== item.name)
-              );
-            } else {
-              setVegetableList((prev) =>
-                prev.filter((i) => i.name !== item.name)
-              );
-            }
-            setMainList((prev) => [...prev, item]);
-          }}
+          onDropItem={handleOnDropItemToMainList}
         />
 
         <Column
@@ -78,13 +92,7 @@ export default function Page() {
           borderColor="text-green-600"
           acceptType="Fruit"
           onClick={handleFruitItemClick}
-          onDropItem={(item) => {
-            setMainList((prev) =>
-              prev.filter((i) => i.name !== item.name)
-            );
-            setFruitList((prev) => [...prev, item]);
-            setTimeout(() => moveToMainList(item), 5000);
-          }}
+          onDropItem={handleOnDropItemToFruitList}
         />
 
         <Column
@@ -93,13 +101,7 @@ export default function Page() {
           borderColor="text-orange-500"
           acceptType="Vegetable"
           onClick={handleVegetableItemClick}
-          onDropItem={(item) => {
-            setMainList((prev) =>
-              prev.filter((i) => i.name !== item.name)
-            );
-            setVegetableList((prev) => [...prev, item]);
-            setTimeout(() => moveToMainList(item), 5000);
-          }}
+          onDropItem={handleOnDropItemToVegetableList}
         />
       </div>
     </main>

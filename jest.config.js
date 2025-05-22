@@ -10,6 +10,7 @@ const customJestConfig = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
   },
+  collectCoverage: true,
 };
 
 module.exports = createJestConfig(customJestConfig);

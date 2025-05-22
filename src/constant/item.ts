@@ -1,4 +1,4 @@
-import { Item } from '@/@types/data';
+import { Item } from '@/@types/item';
 
 export const initialItems: Item[] = [
   { type: 'Fruit', name: 'Apple' },

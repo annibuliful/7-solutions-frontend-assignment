@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Column } from './Column';
-import { Item } from '@/@types/data';
+import { Item } from '@/@types/item';
 
 const fruitItem: Item = { name: 'Apple', type: 'Fruit' };
 const vegetableItem: Item = { name: 'Carrot', type: 'Vegetable' };

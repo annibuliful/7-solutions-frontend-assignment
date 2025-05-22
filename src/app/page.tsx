@@ -1,8 +1,8 @@
 'use client';
 
-import { ColumnType, Item } from '@/@types/data';
+import { ColumnType, Item } from '@/@types/item';
 import { Column } from '@/components/Column';
-import { initialItems } from '@/constant/data';
+import { initialItems } from '@/constant/item';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 export default function Page() {

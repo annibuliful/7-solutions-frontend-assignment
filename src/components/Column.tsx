@@ -1,6 +1,6 @@
 'use client';
 
-import { Item } from '@/@types/data';
+import { Item } from '@/@types/item';
 import { useRef, useState } from 'react';
 
 type ColumnProps = {

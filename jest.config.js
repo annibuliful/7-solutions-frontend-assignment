@@ -12,7 +12,6 @@ const customJestConfig = {
   },
   collectCoverage: true,
   coverageReporters: ['text', 'json-summary'],
-  coverageDirectory: 'coverage-report',
 };
 
 module.exports = createJestConfig(customJestConfig);

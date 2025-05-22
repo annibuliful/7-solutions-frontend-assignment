@@ -1,4 +1,5 @@
 'use client';
+
 import { Item } from '@/@types/data';
 import { useRef, useState } from 'react';
 
@@ -59,7 +60,8 @@ export function Column({
         setIsDraggingOver(false);
         setIsInvalidDrop(true);
       }
-    } catch {
+    } catch (error) {
+      console.error('[handleDragOver]: ', error);
       setIsInvalidDrop(true);
     }
   }
@@ -77,7 +79,7 @@ export function Column({
         onDropItem(item);
       }
     } catch (error) {
-      console.error(error);
+      console.error('[handleDrop]: ', error);
     }
   }
 

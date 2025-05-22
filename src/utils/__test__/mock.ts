@@ -1,0 +1,72 @@
+import { DepartmentStats } from '@/@types/department';
+import { User } from '@/@types/user';
+
+export const mockBaseStats: DepartmentStats = {
+  male: 0,
+  female: 0,
+  ageRange: '',
+  hair: {},
+  addressUser: {},
+};
+
+export const mockUser: User = {
+  id: 1,
+  firstName: 'John',
+  lastName: 'Doe',
+  age: 30,
+  gender: 'male',
+  email: '',
+  phone: '',
+  username: '',
+  password: '',
+  birthDate: '',
+  image: '',
+  bloodGroup: '',
+  height: 0,
+  weight: 0,
+  eyeColor: '',
+  hair: { color: 'Black', type: '' },
+  ip: '',
+  address: {
+    address: '',
+    city: '',
+    state: '',
+    stateCode: '',
+    postalCode: '12345',
+    coordinates: { lat: 0, lng: 0 },
+    country: '',
+  },
+  macAddress: '',
+  university: '',
+  bank: {
+    cardExpire: '',
+    cardNumber: '',
+    cardType: '',
+    currency: '',
+    iban: '',
+  },
+  company: {
+    department: '',
+    name: '',
+    title: '',
+    address: {
+      address: '',
+      city: '',
+      state: '',
+      stateCode: '',
+      postalCode: '',
+      coordinates: { lat: 0, lng: 0 },
+      country: '',
+    },
+  },
+  ein: '',
+  ssn: '',
+  userAgent: '',
+  crypto: {
+    coin: '',
+    wallet: '',
+    network: '',
+  },
+  role: 'user',
+  maidenName: '',
+};

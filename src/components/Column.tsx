@@ -1,3 +1,4 @@
+'use client';
 import { Item } from '@/@types/data';
 import { useRef, useState } from 'react';
 
@@ -5,6 +6,7 @@ type ColumnProps = {
   title: string;
   items: Item[];
   borderColor: string;
+  acceptType: 'Fruit' | 'Vegetable' | 'Any';
   onClick: (item: Item) => void;
   onDropItem: (item: Item) => void;
 };
@@ -13,60 +15,84 @@ export function Column({
   title,
   items,
   borderColor,
+  acceptType,
   onClick,
   onDropItem,
 }: ColumnProps) {
-  const draggedRef = useRef(false);
   const [isDraggingOver, setIsDraggingOver] = useState(false);
+  const [isInvalidDrop, setIsInvalidDrop] = useState(false);
 
-  function handleDragStart(
-    e: React.DragEvent,
-    item: ColumnProps['items'][0]
-  ) {
-    draggedRef.current = true;
+  const pointerDownTimeRef = useRef<number | null>(null);
+
+  function handlePointerDown() {
+    pointerDownTimeRef.current = Date.now();
+  }
+
+  function handleClick(item: Item) {
+    const duration = Date.now() - (pointerDownTimeRef.current ?? 0);
+    // If held down less than 200ms, treat as click
+    if (duration < 200) {
+      onClick(item);
+    }
+  }
+
+  function handleDragStart(e: React.DragEvent, item: Item) {
     e.dataTransfer.setData('text/plain', JSON.stringify(item));
     e.dataTransfer.effectAllowed = 'move';
   }
 
   function handleDragEnd() {
     setTimeout(() => {
-      draggedRef.current = false;
+      setIsInvalidDrop(false);
     }, 100);
   }
 
-  function handleClick(item: ColumnProps['items'][0]) {
-    if (draggedRef.current) return;
-    onClick(item);
+  function handleDragOver(e: React.DragEvent) {
+    e.preventDefault();
+    const raw = e.dataTransfer.getData('text/plain');
+    try {
+      const item: Item = JSON.parse(raw);
+      if (acceptType === 'Any' || item.type === acceptType) {
+        setIsDraggingOver(true);
+        setIsInvalidDrop(false);
+      } else {
+        setIsDraggingOver(false);
+        setIsInvalidDrop(true);
+      }
+    } catch {
+      setIsInvalidDrop(true);
+    }
   }
 
   function handleDrop(e: React.DragEvent) {
     e.preventDefault();
     setIsDraggingOver(false);
+    setIsInvalidDrop(false);
 
-    const raw = e.dataTransfer.getData('text/plain');
-    if (!raw) return;
     try {
-      const item = JSON.parse(raw);
-      onDropItem(item);
-    } catch {
-      return;
-    }
+      const item: Item = JSON.parse(
+        e.dataTransfer.getData('text/plain')
+      );
+      if (acceptType === 'Any' || item.type === acceptType) {
+        onDropItem(item);
+      }
+    } catch {}
   }
 
   return (
     <div
-      className="min-w-[260px] flex-1 transition-all"
-      onDragOver={(e) => {
-        e.preventDefault();
-        setIsDraggingOver(true);
+      className="min-w-[260px] flex-1"
+      onDragOver={handleDragOver}
+      onDragLeave={() => {
+        setIsDraggingOver(false);
+        setIsInvalidDrop(false);
       }}
-      onDragLeave={() => setIsDraggingOver(false)}
       onDrop={handleDrop}
     >
       <div
-        className={`rounded-xl border bg-white p-4 shadow-sm transition-colors duration-300 ${
+        className={`rounded-xl border p-4 shadow-sm transition-colors duration-300 bg-white ${
           isDraggingOver ? 'bg-blue-50 border-blue-300' : ''
-        }`}
+        } ${isInvalidDrop ? 'border-red-400 bg-red-50' : ''}`}
       >
         <h2 className={`text-base font-semibold mb-3 ${borderColor}`}>
           {title}
@@ -76,6 +102,7 @@ export function Column({
             <div
               key={item.name}
               draggable
+              onPointerDown={handlePointerDown}
               onClick={() => handleClick(item)}
               onDragStart={(e) => handleDragStart(e, item)}
               onDragEnd={handleDragEnd}

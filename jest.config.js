@@ -11,6 +11,8 @@ const customJestConfig = {
     '^@/(.*)$': '<rootDir>/$1',
   },
   collectCoverage: true,
+  coverageReporters: ['text', 'json-summary'],
+  coverageDirectory: 'coverage-report',
 };
 
 module.exports = createJestConfig(customJestConfig);

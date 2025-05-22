@@ -3,7 +3,7 @@
 import { ColumnType, Item } from '@/@types/data';
 import { Column } from '@/components/Column';
 import { initialItems } from '@/constant/data';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 export default function Page() {
   const [mainList, setMainList] = useState<Item[]>(initialItems);
@@ -12,7 +12,7 @@ export default function Page() {
 
   const listSetters: Record<
     ColumnType,
-    React.Dispatch<React.SetStateAction<Item[]>>
+    Dispatch<SetStateAction<Item[]>>
   > = {
     Main: setMainList,
     Fruit: setFruitList,

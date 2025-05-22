@@ -76,7 +76,9 @@ export function Column({
       if (acceptType === 'Any' || item.type === acceptType) {
         onDropItem(item);
       }
-    } catch {}
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (

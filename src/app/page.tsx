@@ -1,6 +1,6 @@
 'use client';
 
-import { Item } from '@/@types/data';
+import { ColumnType, Item } from '@/@types/data';
 import { Column } from '@/components/Column';
 import { initialItems } from '@/constant/data';
 import { useState } from 'react';
@@ -10,26 +10,32 @@ export default function Page() {
   const [fruitList, setFruitList] = useState<Item[]>([]);
   const [vegetableList, setVegetableList] = useState<Item[]>([]);
 
+  const listSetters: Record<
+    ColumnType,
+    React.Dispatch<React.SetStateAction<Item[]>>
+  > = {
+    main: setMainList,
+    Fruit: setFruitList,
+    Vegetable: setVegetableList,
+  };
+
+  const moveItemBetweenLists = (
+    item: Item,
+    from: ColumnType,
+    to: ColumnType
+  ) => {
+    listSetters[from]((prev) =>
+      prev.filter((i) => i.name !== item.name)
+    );
+    listSetters[to]((prev) => [...prev, item]);
+  };
+
   const moveToMainList = (item: Item) => {
-    setMainList((prev) => [...prev, item]);
-    if (item.type === 'Fruit') {
-      setFruitList((prev) =>
-        prev.filter((i) => i.name !== item.name)
-      );
-    } else {
-      setVegetableList((prev) =>
-        prev.filter((i) => i.name !== item.name)
-      );
-    }
+    moveItemBetweenLists(item, item.type as ColumnType, 'main');
   };
 
   const handleMainItemClick = (item: Item) => {
-    setMainList((prev) => prev.filter((i) => i.name !== item.name));
-    if (item.type === 'Fruit') {
-      setFruitList((prev) => [...prev, item]);
-    } else {
-      setVegetableList((prev) => [...prev, item]);
-    }
+    moveItemBetweenLists(item, 'main', item.type as ColumnType);
 
     setTimeout(() => {
       moveToMainList(item);
@@ -37,39 +43,24 @@ export default function Page() {
   };
 
   const handleFruitItemClick = (item: Item) => {
-    setFruitList((prev) => prev.filter((i) => i.name !== item.name));
-    setMainList((prev) => [...prev, item]);
+    moveItemBetweenLists(item, 'Fruit', 'main');
   };
 
   const handleVegetableItemClick = (item: Item) => {
-    setVegetableList((prev) =>
-      prev.filter((i) => i.name !== item.name)
-    );
-    setMainList((prev) => [...prev, item]);
+    moveItemBetweenLists(item, 'Vegetable', 'main');
   };
 
   const handleOnDropItemToMainList = (item: Item) => {
-    if (item.type === 'Fruit') {
-      setFruitList((prev) =>
-        prev.filter((i) => i.name !== item.name)
-      );
-    } else {
-      setVegetableList((prev) =>
-        prev.filter((i) => i.name !== item.name)
-      );
-    }
-    setMainList((prev) => [...prev, item]);
+    moveItemBetweenLists(item, item.type as ColumnType, 'main');
   };
 
   const handleOnDropItemToFruitList = (item: Item) => {
-    setMainList((prev) => prev.filter((i) => i.name !== item.name));
-    setFruitList((prev) => [...prev, item]);
+    moveItemBetweenLists(item, 'main', 'Fruit');
     setTimeout(() => moveToMainList(item), 5000);
   };
 
   const handleOnDropItemToVegetableList = (item: Item) => {
-    setMainList((prev) => prev.filter((i) => i.name !== item.name));
-    setVegetableList((prev) => [...prev, item]);
+    moveItemBetweenLists(item, 'main', 'Vegetable');
     setTimeout(() => moveToMainList(item), 5000);
   };
 

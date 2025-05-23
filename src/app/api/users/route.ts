@@ -1,8 +1,9 @@
 import { groupDepartmentByUserData } from '@/utils/groupByUserData';
-import { NextRequest } from 'next/server';
 
-export async function GET(request: NextRequest) {
-  const response = await fetch('https://dummyjson.com/users');
+export async function GET() {
+  const response = await fetch(
+    process.env.USER_API_ENDPOINT as string
+  );
   const data = await response.json();
   const summary = groupDepartmentByUserData(data.users);
 

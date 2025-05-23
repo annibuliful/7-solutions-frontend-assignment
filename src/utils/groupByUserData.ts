@@ -1,5 +1,5 @@
 import { DepartmentStats } from '@/@types/department';
-import { Gender, User } from '@/@types/user';
+import { User } from '@/@types/user';
 import { mapToObject } from './mapToObject';
 import { computeAgeRanges } from './computeAgeRanges';
 import { getUpdatedDepartmentStats } from './getUpdatedDepartmentStats';

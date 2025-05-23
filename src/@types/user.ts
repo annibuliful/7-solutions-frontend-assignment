@@ -74,7 +74,7 @@ export type User = {
   role: 'admin' | 'moderator' | 'user';
 };
 
-type UsersResponse = {
+export type UsersResponse = {
   users: User[];
   total: number;
   skip: number;

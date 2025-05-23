@@ -3,7 +3,6 @@ import { User } from '@/@types/user';
 import { mapToObject } from './mapToObject';
 import { computeAgeRanges } from './computeAgeRanges';
 import { getUpdatedDepartmentStats } from './getUpdatedDepartmentStats';
-import { departmentInitialized } from './departmentInitialized';
 
 type TransformedResult = Record<string, DepartmentStats>;
 
@@ -17,21 +16,28 @@ export function groupDepartmentByUserData(
     const user = users[i];
     const department = user.company.department;
 
-    // make to immutable value
-    ({ statsMap, agesMap } = departmentInitialized(
-      statsMap,
-      agesMap,
-      department
-    ));
+    if (!statsMap.has(department)) {
+      statsMap = new Map(statsMap).set(department, {
+        male: 0,
+        female: 0,
+        ageRange: '',
+        hair: {},
+        addressUser: {},
+      });
+      agesMap = new Map(agesMap).set(department, []);
+    }
 
-    const stats = statsMap.get(department)!;
-    const updatedStats = getUpdatedDepartmentStats(user, stats);
+    const currentStats = statsMap.get(department)!;
+    const currentAges = agesMap.get(department)!;
+
+    const updatedStats = getUpdatedDepartmentStats(
+      user,
+      currentStats
+    );
     statsMap.set(department, updatedStats);
-
-    const updatedAges = [...agesMap.get(department)!, user.age];
-    agesMap.set(department, updatedAges);
+    currentAges.push(user.age);
   }
 
-  statsMap = computeAgeRanges(statsMap, agesMap);
-  return mapToObject(statsMap);
+  const finalStatsMap = computeAgeRanges(statsMap, agesMap);
+  return mapToObject(finalStatsMap);
 }

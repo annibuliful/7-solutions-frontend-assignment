@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { Column } from '@/components/Column';
 import { initialItems } from '@/constant/item';
 import { ColumnType, Item } from '@/@types/item';
@@ -16,7 +16,7 @@ export default function Page() {
 
   const listSetters: Record<
     ColumnType,
-    React.Dispatch<React.SetStateAction<Item[]>>
+    Dispatch<SetStateAction<Item[]>>
   > = {
     Main: setMainList,
     Fruit: setFruitList,

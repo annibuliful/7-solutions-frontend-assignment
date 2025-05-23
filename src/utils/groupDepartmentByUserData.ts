@@ -16,7 +16,6 @@ export function groupDepartmentByUserData(
     const user = users[i];
     const department = user.company.department;
 
-    // Ensure department maps are initialized
     if (!statsMap.has(department)) {
       statsMap = new Map(statsMap).set(department, {
         male: 0,
@@ -28,7 +27,6 @@ export function groupDepartmentByUserData(
       agesMap = new Map(agesMap).set(department, []);
     }
 
-    // Safely extract references (since already initialized)
     const currentStats = statsMap.get(department)!;
     const currentAges = agesMap.get(department)!;
 
@@ -40,7 +38,6 @@ export function groupDepartmentByUserData(
     currentAges.push(user.age);
   }
 
-  // Compute final age ranges
   const finalStatsMap = computeAgeRanges(statsMap, agesMap);
   return mapToObject(finalStatsMap);
 }

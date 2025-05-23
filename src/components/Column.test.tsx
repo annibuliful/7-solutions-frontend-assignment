@@ -161,8 +161,6 @@ describe('<Column />', () => {
 
     const container = screen.getByText('Fruits').closest('div')!;
     fireEvent.dragLeave(container);
-
-    // No explicit assertion needed; just to cover the handler
   });
 
   it('handles invalid JSON in drop gracefully', () => {
@@ -183,7 +181,7 @@ describe('<Column />', () => {
 
     const container = screen.getByText('Fruits').closest('div')!;
     const dataTransfer = {
-      getData: () => '{invalid json}', // this will throw JSON.parse error
+      getData: () => '{invalid json}',
     };
 
     fireEvent.drop(container, { dataTransfer });
@@ -238,10 +236,8 @@ describe('<Column />', () => {
     const item = screen.getByText('Apple');
     fireEvent.dragEnd(item);
 
-    // Fast-forward timer
     jest.advanceTimersByTime(100);
 
-    // No assert needed — this ensures coverage of setTimeout
     jest.useRealTimers();
   });
 });

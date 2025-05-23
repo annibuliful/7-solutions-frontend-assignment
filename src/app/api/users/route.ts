@@ -1,4 +1,4 @@
-import { groupDepartmentByUserData } from '@/utils/groupByUserData';
+import { groupDepartmentByUserData } from '@/utils/groupDepartmentByUserData';
 
 export async function GET() {
   const response = await fetch(
